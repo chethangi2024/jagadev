@@ -1,6 +1,6 @@
 ---
 title: Privacy Policy
-version: "2026-11-v1"
+version: "2026-11-v2"
 lastUpdated: "16 November 2026"
 seoDescription: How Jagadev Associates LLP collects, uses and protects personal data under the Digital Personal Data Protection Act, 2023.
 ---
@@ -17,7 +17,7 @@ Jagadev Associates LLP (LLPIN AAX-9095) is a tax, audit and corporate affairs pr
 
 **When you call or WhatsApp us:** your phone number, name and whatever you choose to share in the conversation.
 
-**When you visit the website:** basic, anonymous usage statistics (pages visited, device type, approximate region). We use privacy-friendly analytics that do not use cookies and do not identify you.
+**When you visit the website:** basic, anonymous usage statistics (pages visited, device type, approximate region). We use privacy-friendly analytics that do not use cookies and do not identify you. Pages with a map load Google Maps, which may collect technical data such as your IP address under Google's own privacy policy.
 
 Please do not send PAN, Aadhaar, bank details or financial documents through the website form. We will arrange a secure way to receive documents once you engage us.
 
@@ -43,7 +43,7 @@ Only the service providers that help us run this website and respond to you:
 | Form delivery service | Sends form submissions to our email |
 | Google (Gmail) | Our email inbox |
 | Cookieless analytics provider | Anonymous visit statistics |
-| Google Maps | Shows our location, only if you tap "Show map" |
+| Google Maps | Shows our office location on the Home and Contact pages. Google may set its own cookies when the map loads; see Google's privacy policy. |
 
 These providers process data on our instructions. We may also disclose data where the law requires it.
 

@@ -260,6 +260,7 @@ const services = (await getCollection('services')).sort((a, b) => a.data.order -
   .office-list a { font-weight: 600; }
   .office-visual { display: grid; gap: 1.25rem; }
   .office-visual :global(.map) { min-height: 260px; }
+  .office-visual :global(.map iframe) { min-height: 260px; }
 
   @media (max-width: 1000px) {
     .svc-cards { grid-template-columns: repeat(2, 1fr); }
