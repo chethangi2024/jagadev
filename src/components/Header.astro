@@ -1,0 +1,95 @@
+---
+import Icon from './Icon.astro';
+import { site, nav, primaryPhone, waLink } from '../lib/site';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <span class="tb-item"><Icon name="clock" size={16} />{site.hours.short}</span>
+    <span class="tb-group">
+      {site.phones.map((p) => (
+        <a class="tb-item" href={`tel:${p.tel}`}><Icon name="phone" size={16} />{p.label}</a>
+      ))}
+      <a class="tb-item" href={waLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={16} />WhatsApp</a>
+    </span>
+  </div>
+</div>
+<header class="site-header" data-header>
+  <div class="wrap header-inner">
+    <a class="brand" href="/" aria-label={`${site.firmName}, home`}>
+      <img src="/images/logo-aj.jpg" alt="" width="48" height="48" />
+      <span class="brand-text">
+        <span class="brand-name">{site.firmName}</span>
+        <span class="brand-sub">Tax, audit &amp; corporate affairs</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <ul id="nav-list">
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a class="btn btn-primary header-call" href={`tel:${primaryPhone.tel}`}><Icon name="phone" />Call now</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-list" data-menu>
+      <Icon name="menu" class="i-open" /><Icon name="close" class="i-close" />
+      <span class="visually-hidden">Menu</span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu]');
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    header?.classList.toggle('is-open', !open);
+  });
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 24);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+<style>
+  .topbar { background: var(--navy); color: #c9dae6; font-size: var(--step--1); }
+  .topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 40px; }
+  .tb-group { display: flex; gap: 1.25rem; }
+  .tb-item { display: inline-flex; align-items: center; gap: .4rem; color: inherit; text-decoration: none; }
+  a.tb-item:hover { color: #fff; }
+  .tb-item :global(svg) { color: var(--sky); }
+
+  .site-header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.96); backdrop-filter: saturate(1.4) blur(8px); border-bottom: 1px solid var(--rule); transition: box-shadow .2s; }
+  .site-header.is-scrolled { box-shadow: 0 6px 20px -12px rgba(14,42,71,.35); }
+  .header-inner { display: flex; align-items: center; gap: 2rem; min-height: 76px; transition: min-height .2s; }
+  .is-scrolled .header-inner { min-height: 64px; }
+  .brand { display: flex; align-items: center; gap: .75rem; text-decoration: none; margin-right: auto; }
+  .brand img { width: 48px; height: 48px; border-radius: 8px; }
+  .brand-text { display: grid; line-height: 1.15; }
+  .brand-name { font-family: var(--head); font-size: 1.2rem; font-weight: 750; letter-spacing: -0.01em; color: var(--navy); }
+  .brand-sub { font-size: .78rem; color: var(--muted); letter-spacing: .01em; }
+  .main-nav ul { list-style: none; display: flex; gap: 1.75rem; margin: 0; padding: 0; }
+  .main-nav a { color: var(--ink); text-decoration: none; font-weight: 550; padding-block: .4rem; border-bottom: 2px solid transparent; }
+  .main-nav a:hover { color: var(--navy); border-color: var(--rule); }
+  .main-nav a[aria-current='page'] { color: var(--navy); border-color: var(--sky); }
+  .menu-btn { display: none; background: none; border: 0; padding: .5rem; color: var(--navy); cursor: pointer; }
+  .menu-btn :global(.i-close) { display: none; }
+
+  @media (max-width: 760px) {
+    .topbar { display: none; }
+    .brand-name { font-size: 1.12rem; }
+    .brand img { width: 42px; height: 42px; }
+  }
+  @media (max-width: 960px) {
+    .tb-item:first-child, .tb-group a:nth-child(2) { display: none; }
+    .topbar-inner { justify-content: center; }
+    .header-call { display: none; }
+    .menu-btn { display: block; }
+    .main-nav { position: absolute; inset: 100% 0 auto; background: #fff; border-bottom: 1px solid var(--rule); display: none; }
+    .is-open .main-nav { display: block; }
+    .is-open .menu-btn :global(.i-open) { display: none; }
+    .is-open .menu-btn :global(.i-close) { display: block; }
+    .main-nav ul { flex-direction: column; gap: 0; padding: .5rem var(--gutter) 1rem; }
+    .main-nav a { display: block; padding: .85rem 0; border-bottom: 1px solid var(--rule); }
+  }
+</style>

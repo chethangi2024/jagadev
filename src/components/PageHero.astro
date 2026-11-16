@@ -1,0 +1,35 @@
+---
+// Inner-page banner: photo background with a navy overlay, title and breadcrumb.
+interface Props { title: string; intro?: string; crumbs?: { name: string; href: string }[]; image?: string; imageAlt?: string; }
+const { title, intro, crumbs = [], image, imageAlt = '' } = Astro.props;
+---
+<section class:list={['page-hero', { 'has-img': image }]}>
+  {image && <img class="ph-bg" src={image} alt={imageAlt} fetchpriority="high" onerror="this.remove()" />}
+  <div class="wrap ph-inner on-dark">
+    {crumbs.length > 0 && (
+      <nav class="crumbs" aria-label="Breadcrumb" data-reveal="up">
+        <a href="/">Home</a>
+        {crumbs.map((c, i) => (
+          <>
+            <span aria-hidden="true">/</span>
+            {i === crumbs.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={c.href}>{c.name}</a>}
+          </>
+        ))}
+      </nav>
+    )}
+    <h1 data-reveal="up" style="--i:1">{title}</h1>
+    {intro && <p class="ph-intro" data-reveal="up" style="--i:2">{intro}</p>}
+    <div data-reveal="up" style="--i:3"><slot /></div>
+  </div>
+</section>
+<style>
+  .page-hero { position: relative; background: linear-gradient(120deg, var(--navy), #13456f); color: #d9e6ef; overflow: hidden; padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .ph-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .has-img::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(14,42,71,.94) 0%, rgba(14,42,71,.8) 50%, rgba(14,42,71,.45) 100%); }
+  .ph-inner { position: relative; z-index: 2; }
+  .page-hero h1 { color: #fff; max-width: 20ch; }
+  .ph-intro { font-size: var(--step-1); max-width: 58ch; color: #d2e1ec; }
+  .crumbs { font-size: var(--step--1); margin-bottom: 1rem; color: #a9c2d3; }
+  .crumbs a { color: #d9e6ef; }
+  .crumbs span[aria-hidden] { margin-inline: .45rem; }
+</style>

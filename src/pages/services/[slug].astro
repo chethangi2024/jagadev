@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import ContactBand from '../../components/ContactBand.astro';
+import { getCollection, render } from 'astro:content';
+import { primaryPhone, waLink } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((s) => ({ params: { slug: s.id }, props: { service: s } }));
+}
+const { service } = Astro.props;
+const d = service.data;
+const { Content } = await render(service);
+const others = (await getCollection('services')).filter((s) => s.id !== service.id).sort((a, b) => a.data.order - b.data.order);
+const crumbs = [{ name: 'Services', href: '/services' }, { name: d.title, href: `/services/${service.id}` }];
+const faqSchema = d.faqs.length
+  ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }]
+  : [];
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: d.title, description: d.summary, provider: { '@id': new URL('/#business', Astro.site).href }, areaServed: 'Bengaluru' };
+---
+<BaseLayout title={d.seoTitle} description={d.seoDescription} breadcrumbs={crumbs} schema={[serviceSchema, ...faqSchema]}>
+  <PageHero title={d.title} intro={d.summary} crumbs={crumbs} image={d.image} imageAlt={d.imageAlt}>
+    <div class="btn-row hero-ctas">
+      <a class="btn btn-primary" href={`tel:${primaryPhone.tel}`}><Icon name="phone" />Call {primaryPhone.label}</a>
+      <a class="btn btn-ghost" href={waLink(d.title)} target="_blank" rel="noopener"><Icon name="whatsapp" />Ask on WhatsApp</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap detail">
+      <div class="main-col">
+        <div class="prose intro" data-reveal="up"><Content /></div>
+
+        {d.includes.length > 0 && (
+          <section class="block">
+            <h2 data-reveal="up">What is included</h2>
+            <dl class="includes" data-stagger="up">
+              {d.includes.map((inc) => (
+                <div><dt><Icon name="check" size={20} />{inc.name}</dt>{inc.detail && <dd>{inc.detail}</dd>}</div>
+              ))}
+            </dl>
+          </section>
+        )}
+
+        {d.steps.length > 0 && (
+          <section class="block">
+            <h2 data-reveal="up">How it works</h2>
+            <ol class="steps" data-stagger="up">{d.steps.map((st) => <li>{st}</li>)}</ol>
+            {d.turnaround && <p class="turnaround"><Icon name="clock" size={18} />Typical turnaround: {d.turnaround}</p>}
+          </section>
+        )}
+
+        {d.faqs.length > 0 && (
+          <section class="block">
+            <h2 data-reveal="up">Common questions</h2>
+            <div class="faqs" data-stagger="up">
+              {d.faqs.map((f) => (
+                <details>
+                  <summary>{f.q}<Icon name="plus" size={20} /></summary>
+                  <p>{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <aside class="side-col">
+        <div class="card help" data-reveal="up">
+          <h2 class="card-h">Need help with this?</h2>
+          <p>Speak to us directly. We will tell you what applies to you and what to bring.</p>
+          <a class="btn btn-primary" href={`tel:${primaryPhone.tel}`}><Icon name="phone" />Call {primaryPhone.label}</a>
+        </div>
+        {d.whoFor.length > 0 && (
+          <div class="card" data-reveal="up">
+            <h2 class="card-h">Who this is for</h2>
+            <ul class="ticks">{d.whoFor.map((w) => <li>{w}</li>)}</ul>
+          </div>
+        )}
+        {d.documents.length > 0 && (
+          <div class="card docs" data-reveal="up">
+            <h2 class="card-h"><Icon name="file" size={20} />Documents to bring</h2>
+            <ul class="ticks">{d.documents.map((doc) => <li>{doc}</li>)}</ul>
+            <p class="note">We confirm the exact list for your case before you visit.</p>
+          </div>
+        )}
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-tint">
+    <div class="wrap">
+      <h2>Other services</h2>
+      <ul class="others" data-stagger="up">
+        {others.map((o) => (
+          <li><a href={`/services/${o.id}`}><Icon name={o.data.icon} size={22} /><span>{o.data.title}</span></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <ContactBand title={`Questions about ${d.title.toLowerCase()}?`} topic={d.title} />
+</BaseLayout>
+
+<style>
+  .hero-ctas { margin-top: 1.5rem; }
+  .detail { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .intro :global(p) { font-size: var(--step-1); line-height: 1.6; color: var(--ink); }
+  .block { margin-top: 3rem; }
+  .block h2 { font-size: var(--step-2); }
+  .includes { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 .75rem; }
+  .includes div { padding: 1.1rem 1.25rem; border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: .75rem; background: #fff; }
+  .includes dt { display: flex; gap: .6rem; align-items: center; font-weight: 650; color: var(--navy); }
+  .includes dt :global(svg) { color: var(--sky); flex: none; }
+  .includes dd { margin: .25rem 0 0 1.85rem; color: var(--muted); }
+  .steps { list-style: none; counter-reset: st; padding: 0; margin: 0; display: grid; gap: .75rem; }
+  .steps li { counter-increment: st; display: grid; grid-template-columns: 2.2rem 1fr; gap: 1rem; align-items: center; }
+  .steps li::before { content: counter(st); display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--sky); color: #fff; font: 800 1rem var(--head); }
+  .turnaround { display: flex; gap: .45rem; align-items: center; margin-top: 1.25rem; color: var(--muted); }
+  .faqs details { border-bottom: 1px solid var(--rule); }
+  .faqs details:first-child { border-top: 1px solid var(--rule); }
+  .faqs summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; font-weight: 600; color: var(--navy); }
+  .faqs summary::-webkit-details-marker { display: none; }
+  .faqs summary :global(svg) { flex: none; color: var(--sky-ink); transition: transform .2s; }
+  .faqs details[open] summary :global(svg) { transform: rotate(45deg); }
+  .faqs details p { color: var(--muted); padding-bottom: 1rem; margin: 0; max-width: 65ch; }
+  .side-col { display: grid; gap: 1.25rem; position: sticky; top: 96px; }
+  .card { background: #fff; border: 1px solid var(--rule); border-radius: var(--radius-lg); padding: 1.5rem; }
+  .help { background: var(--navy); border: 0; color: #c9dae6; }
+  .help .card-h { color: #fff; font-size: 1.25rem; }
+  .card-h { font-family: var(--head); font-size: 1.05rem; font-weight: 650; display: flex; gap: .5rem; align-items: center; margin-bottom: .9rem; }
+  .docs { border-color: var(--sky); box-shadow: inset 4px 0 0 var(--sky); }
+  .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+  .ticks li { position: relative; padding-left: 1.4rem; font-size: .95rem; }
+  .ticks li::before { content: ''; position: absolute; left: 0; top: .55em; width: .5rem; height: .5rem; border-radius: 50%; background: var(--sky); }
+  .note { font-size: .85rem; color: var(--muted); margin: 1rem 0 0; }
+  .others { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .75rem; }
+  .others a { display: flex; align-items: center; gap: .65rem; padding: 1rem 1.1rem; border: 1px solid var(--rule); border-radius: var(--radius); text-decoration: none; color: var(--navy); font-weight: 600; }
+  .others a:hover { border-color: var(--sky); background: var(--sky-tint); }
+  .others :global(svg) { color: var(--sky-ink); flex: none; }
+  @media (max-width: 560px) { .includes { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .detail { grid-template-columns: 1fr; } .side-col { position: static; } }
+</style>

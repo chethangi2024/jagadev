@@ -1,0 +1,12 @@
+---
+// A photo with a soft fallback background, so the layout holds if an image is slow or missing.
+interface Props { src?: string; alt: string; class?: string; eager?: boolean; ratio?: string; reveal?: boolean; }
+const { src, alt, class: className, eager = false, ratio = '4 / 3', reveal = true } = Astro.props;
+---
+<figure class:list={['photo', className]} style={`aspect-ratio:${ratio}`} data-reveal-img={reveal ? '' : undefined}>
+  {src && <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} onerror="this.remove()" />}
+</figure>
+<style>
+  .photo { margin: 0; position: relative; overflow: hidden; border-radius: var(--radius-lg); background: linear-gradient(135deg, #dfeaf0, #c9dce6); }
+  .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+</style>

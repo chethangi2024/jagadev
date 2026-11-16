@@ -1,0 +1,23 @@
+---
+// Renders /privacy-policy and /terms from src/content/legal/*.md
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('legal');
+  return docs.map((doc) => ({ params: { legal: doc.id }, props: { doc } }));
+}
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+const crumbs = [{ name: doc.data.title, href: `/${doc.id}` }];
+---
+<BaseLayout title={`${doc.data.title} | Jagadev Associates LLP`} description={doc.data.seoDescription} breadcrumbs={crumbs}>
+  <PageHero title={doc.data.title} crumbs={crumbs}>
+    <p class="meta">Version {doc.data.version}, last updated {doc.data.lastUpdated}</p>
+  </PageHero>
+  <section class="section">
+    <div class="wrap"><article class="prose"><Content /></article></div>
+  </section>
+</BaseLayout>
+<style>.meta { color: var(--muted); font-size: var(--step--1); margin: 0; }</style>

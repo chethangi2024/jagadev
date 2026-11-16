@@ -1,0 +1,49 @@
+{
+  "title": "About Jagadev Associates",
+  "intro": "Jagadev Associates LLP is a tax, audit and corporate affairs practice in Kothanur, Bengaluru. For about 15 years, the firm has helped small businesses, professionals and salaried individuals stay on the right side of GST, income tax, labour and company law.",
+  "story": [
+    "The practice was founded by Sri. Jagadish Devaraj and works from its own office in Bhoo Vaibhava Layout, off Maha Yogi Vemanna Reddy Road.",
+    "Bengaluru traffic should not stand between you and a filing deadline. Clients can visit the office six days a week, or work with us entirely by phone, WhatsApp and email."
+  ],
+  "partner": {
+    "name": "J Devaraj",
+    "role": "Designated Partner",
+    "bio": "Leads the firm's tax, registration and compliance work. [Client to add qualifications and a short professional background.]",
+    "photo": "",
+    "photoAlt": "Portrait of J Devaraj"
+  },
+  "values": [
+    {
+      "title": "Clear advice",
+      "text": "We explain what is required and why, in plain language, before any work starts."
+    },
+    {
+      "title": "On time",
+      "text": "We track your due dates so filings are not left to the last day."
+    },
+    {
+      "title": "Careful with your data",
+      "text": "Your documents are used only for your work and handled in line with the DPDP Act."
+    }
+  ],
+  "gallery": [
+    {
+      "src": "https://images.unsplash.com/photo-1747992021633-762a63985d01?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Modern office workspace (placeholder for office photo)"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1715593949345-50d3304cff4b?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Open office with desks (placeholder for office photo)"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1758762641372-e3b52bf061d4?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Team working at computers (placeholder for office photo)"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1758519289013-9442fb2aeac6?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Colleagues discussing figures (placeholder for office photo)"
+    }
+  ],
+  "heroImage": "https://images.unsplash.com/photo-1758762641372-e3b52bf061d4?auto=format&fit=crop&w=2000&q=70",
+  "heroImageAlt": "Team working at computers in a modern office"
+}

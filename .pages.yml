@@ -1,0 +1,255 @@
+# Pages CMS configuration (https://pagescms.org)
+# Lets the firm edit website content in a simple online editor.
+# Every save becomes a commit on GitHub, and the host rebuilds the site automatically.
+
+media:
+  input: public/images
+  output: /images
+
+content:
+  # ---------- Business details used on every page ----------
+  - name: site
+    label: Business details
+    type: file
+    path: src/content/settings/site.json
+    format: json
+    fields:
+      - { name: firmName, label: Firm name, type: string }
+      - { name: shortName, label: Short name, type: string }
+      - { name: descriptor, label: Descriptor under the name, type: string }
+      - { name: llpin, label: LLPIN, type: string }
+      - { name: partnerName, label: Partner name, type: string }
+      - { name: partnerRole, label: Partner role, type: string }
+      - { name: yearsInPractice, label: Years in practice, type: string }
+      - name: phones
+        label: Phone numbers
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Shown as (e.g. +91 99458 40776), type: string }
+          - { name: tel, label: Dial number (e.g. +919945840776), type: string }
+      - { name: whatsapp, label: WhatsApp number (country code, no +), type: string }
+      - { name: whatsappMessage, label: WhatsApp starter message, type: string }
+      - { name: email, label: Email, type: string }
+      - name: address
+        label: Address
+        type: object
+        fields:
+          - { name: line1, label: Line 1, type: string }
+          - { name: line2, label: Line 2, type: string }
+          - { name: locality, label: Locality, type: string }
+          - { name: city, label: City, type: string }
+          - { name: state, label: State, type: string }
+          - { name: pincode, label: PIN code, type: string }
+          - { name: landmark, label: Nearby landmark, type: string }
+      - { name: mapsLink, label: Google Maps link, type: string }
+      - { name: mapEmbedUrl, label: Google Maps embed link, type: string }
+      - name: hours
+        label: Office hours
+        type: object
+        fields:
+          - { name: days, label: Days, type: string }
+          - { name: time, label: Time, type: string }
+          - { name: short, label: Short form, type: string }
+          - { name: schema, label: "Google format (e.g. Mo-Sa 09:30-20:30)", type: string }
+      - name: grievanceOfficer
+        label: Grievance Officer (DPDP Act)
+        type: object
+        fields:
+          - { name: name, label: Name, type: string }
+          - { name: role, label: Role, type: string }
+          - { name: email, label: Email, type: string }
+          - { name: phone, label: Phone, type: string }
+          - { name: responseTime, label: Response time, type: string }
+      - name: social
+        label: Social media profiles
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Network (e.g. Facebook), type: string }
+          - { name: url, label: Profile link, type: string }
+      - name: form
+        label: Enquiry form
+        type: object
+        fields:
+          - { name: web3formsAccessKey, label: Web3Forms access key, type: string }
+          - { name: noticeVersion, label: Privacy notice version, type: string }
+
+  # ---------- Home page ----------
+  - name: home
+    label: Home page
+    type: file
+    path: src/content/pages/home.json
+    format: json
+    fields:
+      - name: hero
+        label: Top banner
+        type: object
+        fields:
+          - { name: eyebrow, label: Location line above headline, type: string }
+          - { name: headline, label: Headline, type: text }
+          - { name: subtext, label: Text under headline, type: text }
+          - { name: image, label: Background photo, type: image }
+          - { name: imageAlt, label: Photo description, type: string }
+          - name: highlights
+            label: Highlight boxes under the banner
+            type: object
+            list: true
+            fields:
+              - { name: icon, label: "Icon (clock, video, shield, phone, users, check, file, lock)", type: string }
+              - { name: title, label: Title, type: string }
+              - { name: text, label: Text, type: string }
+      - name: about
+        label: About section
+        type: object
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Text, type: text }
+          - { name: points, label: Tick points, type: string, list: true }
+          - { name: image1, label: Large photo, type: image }
+          - { name: image1Alt, label: Large photo description, type: string }
+          - { name: image2, label: Small photo, type: image }
+          - { name: image2Alt, label: Small photo description, type: string }
+          - { name: badgeValue, label: Badge number, type: string }
+          - { name: badgeLabel, label: Badge label, type: string }
+      - name: servicesIntro
+        label: Services section
+        type: object
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Text, type: text }
+      - name: counters
+        label: Number counters
+        type: object
+        list: true
+        fields:
+          - { name: value, label: Number, type: number }
+          - { name: suffix, label: "Suffix (e.g. +)", type: string }
+          - { name: label, label: Label, type: string }
+      - name: why
+        label: Why choose us
+        type: object
+        fields:
+          - { name: title, label: Title, type: string }
+          - name: items
+            label: Reasons
+            type: object
+            list: true
+            fields:
+              - { name: icon, label: Icon, type: string }
+              - { name: title, label: Title, type: string }
+              - { name: text, label: Text, type: text }
+      - name: process
+        label: How we work
+        type: object
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Text, type: text }
+          - name: steps
+            label: Steps
+            type: object
+            list: true
+            fields:
+              - { name: icon, label: Icon, type: string }
+              - { name: title, label: Title, type: string }
+              - { name: text, label: Text, type: text }
+      - name: office
+        label: Office section
+        type: object
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Text, type: text }
+          - { name: image, label: Photo, type: image }
+          - { name: imageAlt, label: Photo description, type: string }
+      - name: cta
+        label: Bottom call-to-action banner
+        type: object
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Text, type: text }
+          - { name: image, label: Background photo, type: image }
+          - { name: imageAlt, label: Photo description, type: string }
+
+  # ---------- Services ----------
+  - name: services
+    label: Services
+    type: collection
+    path: src/content/services
+    view:
+      fields: [title, order]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: order, label: Order on the page, type: number }
+      - { name: icon, label: "Icon (store, receipt, calculator, landmark, shield, users, file)", type: string }
+      - { name: summary, label: Short summary, type: text }
+      - { name: image, label: Photo, type: image }
+      - { name: imageAlt, label: Photo description, type: string }
+      - { name: whoFor, label: Who it is for, type: string, list: true }
+      - name: includes
+        label: What is included
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Item, type: string }
+          - { name: detail, label: Detail, type: text }
+      - { name: documents, label: Documents checklist, type: string, list: true }
+      - { name: steps, label: Process steps, type: string, list: true }
+      - { name: turnaround, label: Typical turnaround (leave blank to hide), type: string }
+      - name: faqs
+        label: FAQs
+        type: object
+        list: true
+        fields:
+          - { name: q, label: Question, type: string }
+          - { name: a, label: Answer, type: text }
+      - { name: seoTitle, label: Google title (max ~60 characters), type: string }
+      - { name: seoDescription, label: Google description (max ~155 characters), type: text }
+      - { name: body, label: Introduction, type: rich-text }
+
+  # ---------- About ----------
+  - name: about
+    label: About page
+    type: file
+    path: src/content/pages/about.json
+    format: json
+    fields:
+      - { name: title, label: Title, type: string }
+      - { name: intro, label: Introduction, type: text }
+      - { name: heroImage, label: Banner photo, type: image }
+      - { name: heroImageAlt, label: Banner photo description, type: string }
+      - { name: story, label: Story paragraphs, type: text, list: true }
+      - name: partner
+        label: Partner
+        type: object
+        fields:
+          - { name: name, label: Name, type: string }
+          - { name: role, label: Role, type: string }
+          - { name: bio, label: Short bio, type: text }
+          - { name: photo, label: Photo, type: image }
+          - { name: photoAlt, label: Photo description, type: string }
+      - name: values
+        label: Values
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Text, type: text }
+      - name: gallery
+        label: Office photos
+        type: object
+        list: true
+        fields:
+          - { name: src, label: Photo, type: image }
+          - { name: alt, label: Photo description, type: string }
+
+  # ---------- Legal pages ----------
+  - name: legal
+    label: Privacy & Terms
+    type: collection
+    path: src/content/legal
+    fields:
+      - { name: title, label: Title, type: string }
+      - { name: version, label: Version, type: string }
+      - { name: lastUpdated, label: Last updated, type: string }
+      - { name: seoDescription, label: Google description, type: text }
+      - { name: body, label: Content, type: rich-text }

@@ -1,0 +1,73 @@
+{
+  "hero": {
+    "eyebrow": "Kothanur, Bengaluru 560077",
+    "headline": "Tax, GST and company compliance for your business",
+    "subtext": "Registrations, returns, accounts and ROC filings for businesses and individuals in Kothanur and north-east Bengaluru. Visit our office or consult us by phone and WhatsApp.",
+    "image": "https://images.unsplash.com/photo-1758518730083-4c12527b6742?auto=format&fit=crop&w=2000&q=70",
+    "imageAlt": "Professionals in a meeting in a modern office",
+    "highlights": [
+      { "icon": "clock", "title": "Open 6 days", "text": "Mon–Sat, 9:30 AM – 8:30 PM" },
+      { "icon": "video", "title": "Remote consults", "text": "Phone, WhatsApp and email" },
+      { "icon": "shield", "title": "Registered LLP", "text": "LLPIN AAX-9095" }
+    ]
+  },
+  "about": {
+    "title": "A local practice that keeps your compliance in order",
+    "text": "Jagadev Associates LLP works with shop owners, startups, professionals and salaried individuals across Kothanur and north-east Bengaluru. We handle the paperwork, explain it in plain language, and keep track of what is due next.",
+    "points": [
+      "One office for registrations, returns and filings",
+      "Documents checked before anything is filed",
+      "In-person visits or fully remote service",
+      "Your data handled in line with the DPDP Act"
+    ],
+    "image1": "https://images.unsplash.com/photo-1781268034959-8706486c22a4?auto=format&fit=crop&w=1200&q=70",
+    "image1Alt": "Professional reviewing documents at an office desk",
+    "image2": "https://images.unsplash.com/photo-1758519289013-9442fb2aeac6?auto=format&fit=crop&w=900&q=70",
+    "image2Alt": "Two colleagues discussing figures on a laptop",
+    "badgeValue": "15",
+    "badgeLabel": "years in practice"
+  },
+  "servicesIntro": {
+    "title": "Our services",
+    "text": "Five service areas, one office. Each page lists what is included, the documents to bring and how the work is done."
+  },
+  "counters": [
+    { "value": 15, "suffix": "", "label": "Years in practice (to confirm)" },
+    { "value": 5, "suffix": "", "label": "Service areas" },
+    { "value": 20, "suffix": "+", "label": "Types of registrations and filings" },
+    { "value": 6, "suffix": "", "label": "Days a week the office is open" }
+  ],
+  "why": {
+    "title": "Why businesses choose us",
+    "items": [
+      { "icon": "users", "title": "Personal attention", "text": "You deal directly with the people doing your work, not a call centre." },
+      { "icon": "check", "title": "Checked before filing", "text": "Every document is reviewed before it goes to a government portal." },
+      { "icon": "clock", "title": "On time", "text": "We track your due dates so nothing is left to the last day." },
+      { "icon": "video", "title": "Remote or in person", "text": "Visit the office or work with us entirely by phone and WhatsApp." },
+      { "icon": "file", "title": "Plain-language advice", "text": "We explain what is required and why, before any work starts." },
+      { "icon": "lock", "title": "Careful with your data", "text": "Your documents are used only for your work and stored securely." }
+    ]
+  },
+  "process": {
+    "title": "How we work",
+    "text": "A clear, simple process, whether you visit us or consult remotely.",
+    "steps": [
+      { "icon": "phone", "title": "Tell us what you need", "text": "Call, WhatsApp or visit. We confirm the scope of work and the documents required." },
+      { "icon": "file", "title": "Share your documents", "text": "Bring them to the office or send them securely. We check them before anything is filed." },
+      { "icon": "send", "title": "We prepare and file", "text": "Registrations, returns and filings are prepared and submitted on the official portals." },
+      { "icon": "check", "title": "You get confirmation", "text": "You receive the acknowledgement or certificate, and we note what is due next." }
+    ]
+  },
+  "office": {
+    "title": "Visit our office in Kothanur",
+    "text": "Our office is on Maha Yogi Vemanna Reddy Road in Bhoo Vaibhava Layout. Walk in during office hours, or call ahead and we will keep your file ready.",
+    "image": "https://images.unsplash.com/photo-1715593949345-50d3304cff4b?auto=format&fit=crop&w=1400&q=70",
+    "imageAlt": "Bright open office with desks and computers"
+  },
+  "cta": {
+    "title": "Have a filing coming up? Talk to us today.",
+    "text": "Call, WhatsApp or walk in. We will tell you exactly what is needed.",
+    "image": "https://images.unsplash.com/photo-1687158267365-3584c7966bc4?auto=format&fit=crop&w=2000&q=70",
+    "imageAlt": "Bengaluru city skyline"
+  }
+}

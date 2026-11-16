@@ -1,0 +1,283 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { getCollection } from 'astro:content';
+import home from '../content/pages/home.json';
+import { site, primaryPhone, waLink, addressOneLine } from '../lib/site';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-media" aria-hidden="true">
+      <img data-parallax src={home.hero.image} alt="" fetchpriority="high" onerror="this.remove()" />
+    </div>
+    <div class="wrap hero-inner on-dark">
+      <p class="hero-loc hero-in" style="--d:0"><Icon name="pin" size={18} />{home.hero.eyebrow}</p>
+      <h1 class="hero-in" style="--d:1">{home.hero.headline}</h1>
+      <p class="hero-sub hero-in" style="--d:2">{home.hero.subtext}</p>
+      <div class="btn-row hero-in" style="--d:3">
+        <a class="btn btn-primary" href={`tel:${primaryPhone.tel}`}><Icon name="phone" />Call {primaryPhone.label}</a>
+        <a class="btn btn-ghost" href={waLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />WhatsApp us</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <ul class="highlights" data-stagger="up">
+      {home.hero.highlights.map((h) => (
+        <li>
+          <span class="hl-icon"><Icon name={h.icon} size={26} /></span>
+          <span><strong>{h.title}</strong><span>{h.text}</span></span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- About -->
+  <section class="section">
+    <div class="wrap about">
+      <div class="collage" data-reveal="left">
+        <Photo src={home.about.image1} alt={home.about.image1Alt} ratio="4 / 5" class="c-main" />
+        <Photo src={home.about.image2} alt={home.about.image2Alt} ratio="1 / 1" class="c-small" />
+        <div class="badge" data-counters>
+          <span class="badge-n"><span data-count={home.about.badgeValue}>{home.about.badgeValue}</span></span>
+          <span class="badge-l">{home.about.badgeLabel}</span>
+        </div>
+      </div>
+      <div class="about-copy">
+        <p class="kicker" data-reveal="up">About us</p>
+        <h2 data-reveal="up">{home.about.title}</h2>
+        <p class="lead" data-reveal="up">{home.about.text}</p>
+        <ul class="ticks" data-stagger="up">
+          {home.about.points.map((p) => <li><span class="tick"><Icon name="check" size={16} /></span>{p}</li>)}
+        </ul>
+        <div data-reveal="up"><a class="btn btn-navy" href="/about">More about us</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section section-tint">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="kicker" data-reveal="up">What we do</p>
+        <h2 data-reveal="up">{home.servicesIntro.title}</h2>
+        <p data-reveal="up">{home.servicesIntro.text}</p>
+      </div>
+      <div class="svc-cards" data-stagger="up">
+        {services.map((s) => (
+          <a class="svc-card" href={`/services/${s.id}`}>
+            <div class="svc-img">
+              <Photo src={s.data.image} alt={s.data.imageAlt ?? ''} ratio="16 / 10" reveal={false} />
+              <span class="svc-badge"><Icon name={s.data.icon} size={26} /></span>
+            </div>
+            <div class="svc-body">
+              <h3>{s.data.title}</h3>
+              <p>{s.data.summary}</p>
+              <span class="svc-more">Learn more <Icon name="arrow" size={18} /></span>
+            </div>
+          </a>
+        ))}
+        <div class="svc-card svc-help">
+          <span class="help-icon"><Icon name="phone" size={30} /></span>
+          <h3>Not sure what you need?</h3>
+          <p>Tell us about your business on a quick call and we will point you to the right service.</p>
+          <a class="btn btn-primary" href={`tel:${primaryPhone.tel}`}>Call {primaryPhone.label}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Counters -->
+  <section class="counters on-dark" data-counters>
+    <div class="wrap">
+      <dl class="count-grid" data-stagger="up">
+        {home.counters.map((c) => (
+          <div>
+            <dd><span data-count={c.value}>{c.value}</span>{c.suffix}</dd>
+            <dt>{c.label}</dt>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Why choose us -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="kicker" data-reveal="up">Why us</p>
+        <h2 data-reveal="up">{home.why.title}</h2>
+      </div>
+      <ul class="why" data-stagger="up">
+        {home.why.items.map((w) => (
+          <li>
+            <span class="why-icon"><Icon name={w.icon} size={26} /></span>
+            <h3>{w.title}</h3>
+            <p>{w.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section section-navy on-dark">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="kicker" data-reveal="up">Our process</p>
+        <h2 data-reveal="up">{home.process.title}</h2>
+        <p data-reveal="up">{home.process.text}</p>
+      </div>
+      <ol class="steps" data-stagger="up">
+        {home.process.steps.map((st, i) => (
+          <li>
+            <span class="step-icon"><Icon name={st.icon} size={28} /><span class="step-n">{i + 1}</span></span>
+            <h3>{st.title}</h3>
+            <p>{st.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Office -->
+  <section class="section">
+    <div class="wrap office">
+      <div class="office-copy">
+        <p class="kicker" data-reveal="up">Visit us</p>
+        <h2 data-reveal="up">{home.office.title}</h2>
+        <p class="lead" data-reveal="up">{home.office.text}</p>
+        <ul class="office-list" data-stagger="up">
+          <li><span><Icon name="pin" size={22} /></span><address>{addressOneLine}</address></li>
+          <li><span><Icon name="clock" size={22} /></span><p>{site.hours.days}<br />{site.hours.time}</p></li>
+          <li><span><Icon name="phone" size={22} /></span><p>{site.phones.map((p) => <a href={`tel:${p.tel}`}>{p.label}</a>)}</p></li>
+        </ul>
+      </div>
+      <div class="office-visual">
+        <Photo src={home.office.image} alt={home.office.imageAlt} ratio="16 / 10" />
+        <div data-reveal="up"><MapEmbed /></div>
+      </div>
+    </div>
+  </section>
+
+  <ContactBand />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero { position: relative; min-height: min(88vh, 760px); display: grid; align-items: center; overflow: hidden; background: var(--navy); }
+  .hero-media { position: absolute; inset: 0; overflow: hidden; }
+  .hero-media img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); }
+  .hero::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(95deg, rgba(14,42,71,.95) 0%, rgba(14,42,71,.82) 45%, rgba(14,42,71,.35) 100%); }
+  .hero-inner { position: relative; z-index: 2; padding-block: 6rem 9rem; }
+  .hero-loc { display: inline-flex; align-items: center; gap: .45rem; padding: .4rem .9rem; border-radius: 999px; background: rgba(255,255,255,.12); color: #e3f1f7; font-weight: 600; font-size: .95rem; margin-bottom: 1.5rem; backdrop-filter: blur(4px); }
+  .hero-loc :global(svg) { color: var(--sky); }
+  .hero h1 { color: #fff; font-size: clamp(2.4rem, 1.5rem + 3.6vw, 4.4rem); max-width: 17ch; line-height: 1.08; }
+  .hero-sub { color: #d2e1ec; font-size: var(--step-1); max-width: 52ch; margin-bottom: 2.25rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-in { animation: heroIn .9s var(--ease) both; animation-delay: calc(var(--d) * 120ms + 150ms); }
+    .hero-media img { animation: kenburns 1.8s var(--ease) both; }
+  }
+  @keyframes heroIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @keyframes kenburns { from { transform: scale(1.22); } to { transform: scale(1.12); } }
+
+  .highlights { list-style: none; margin: -4.5rem 0 0; padding: 0; position: relative; z-index: 5; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .highlights li { display: flex; align-items: center; gap: 1rem; background: #fff; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow); border-bottom: 3px solid var(--sky); }
+  .highlights strong { display: block; font-family: var(--head); color: var(--navy); font-size: 1.1rem; }
+  .highlights li > span:last-child > span { color: var(--muted); font-size: .95rem; }
+  .hl-icon { flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 14px; background: var(--sky-tint); color: var(--sky-ink); }
+
+  /* About */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 6vw, 5.5rem); align-items: center; }
+  .collage { position: relative; padding: 0 12% 12% 0; }
+  .collage :global(.c-small) { position: absolute; right: 0; bottom: 0; width: 46%; border: 8px solid #fff; box-shadow: var(--shadow); }
+  .badge { position: absolute; left: -1rem; top: 8%; background: var(--sky); color: #fff; border-radius: var(--radius-lg); padding: 1.1rem 1.3rem; box-shadow: 0 16px 34px -14px rgba(33,155,193,.9); display: grid; text-align: center; }
+  .badge-n { font-family: var(--head); font-size: 2.6rem; font-weight: 800; line-height: 1; }
+  .badge-l { font-size: .85rem; font-weight: 600; max-width: 9ch; line-height: 1.25; margin-top: .3rem; }
+  .ticks { list-style: none; padding: 0; margin: 1.5rem 0 2rem; display: grid; gap: .8rem; }
+  .ticks li { display: flex; gap: .75rem; align-items: center; font-weight: 550; }
+  .tick { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--sky); color: #fff; }
+
+  /* Services */
+  .svc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .svc-card { background: #fff; border-radius: var(--radius-lg); overflow: hidden; text-decoration: none; color: var(--ink); box-shadow: 0 1px 2px rgba(14,42,71,.06); border: 1px solid var(--rule); display: flex; flex-direction: column; transition: transform .35s var(--ease), box-shadow .35s var(--ease), opacity .8s var(--ease) !important; }
+  .svc-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); color: var(--ink); }
+  .svc-img { position: relative; }
+  .svc-img :global(.photo) { border-radius: 0; }
+  .svc-img :global(img) { transition: transform .8s var(--ease); }
+  .svc-card:hover .svc-img :global(img) { transform: scale(1.07); }
+  .svc-badge { position: absolute; left: 1.25rem; bottom: -26px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 14px; background: var(--sky); color: #fff; box-shadow: 0 10px 22px -10px rgba(33,155,193,.9); z-index: 2; transition: background-color .3s; }
+  .svc-card:hover .svc-badge { background: var(--navy); }
+  .svc-body { padding: 2.4rem 1.5rem 1.6rem; display: flex; flex-direction: column; flex: 1; }
+  .svc-body h3 { font-size: 1.3rem; }
+  .svc-body p { color: var(--muted); font-size: .975rem; flex: 1; }
+  .svc-more { display: inline-flex; align-items: center; gap: .35rem; font-family: var(--head); font-weight: 700; color: var(--sky-ink); }
+  .svc-more :global(svg) { transition: transform .3s var(--ease); }
+  .svc-card:hover .svc-more :global(svg) { transform: translateX(5px); }
+  .svc-help { background: linear-gradient(150deg, var(--navy), #164b75); color: #c9dae6; padding: 2.25rem 1.75rem; justify-content: center; border: 0; }
+  .svc-help h3 { color: #fff; font-size: 1.45rem; }
+  .svc-help p { margin-bottom: 1.5rem; }
+  .svc-help .btn { align-self: flex-start; }
+  .help-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,.1); color: var(--sky); margin-bottom: 1.25rem; }
+
+  /* Counters */
+  .counters { background: linear-gradient(110deg, #0b2440, var(--navy) 50%, #12456f); padding-block: clamp(3rem, 6vw, 4.25rem); }
+  .count-grid { margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .count-grid div { text-align: center; padding: .5rem 1rem; border-left: 1px solid rgba(255,255,255,.14); display: flex; flex-direction: column; }
+  .count-grid div:first-child { border-left: 0; }
+  .count-grid dd { margin: 0; font-family: var(--head); font-size: clamp(2.4rem, 1.8rem + 2vw, 3.4rem); font-weight: 800; color: #fff; line-height: 1.1; }
+  .count-grid dd::first-letter { color: inherit; }
+  .count-grid dt { color: #9fc3d6; font-size: .95rem; margin-top: .35rem; }
+
+  /* Why */
+  .why { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .why li { padding: 2rem 1.75rem; border-radius: var(--radius-lg); background: var(--paper); border: 1px solid transparent; transition: background-color .3s, border-color .3s, transform .35s var(--ease), box-shadow .35s var(--ease), opacity .8s var(--ease) !important; }
+  .why li:hover { background: #fff; border-color: var(--rule); transform: translateY(-4px); box-shadow: var(--shadow); }
+  .why-icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 16px; background: #fff; color: var(--sky); box-shadow: 0 8px 20px -12px rgba(14,42,71,.35); margin-bottom: 1.25rem; transition: background-color .3s, color .3s; }
+  .why li:hover .why-icon { background: var(--sky); color: #fff; }
+  .why p { color: var(--muted); margin: 0; font-size: .975rem; }
+
+  /* Process */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; text-align: center; }
+  .steps::before { content: ''; position: absolute; top: 44px; left: 12.5%; right: 12.5%; border-top: 2px dashed rgba(127,208,234,.35); }
+  .step-icon { position: relative; display: grid; place-items: center; width: 88px; height: 88px; margin: 0 auto 1.25rem; border-radius: 50%; background: #13385c; border: 2px solid rgba(127,208,234,.4); color: #7fd0ea; z-index: 1; }
+  .step-n { position: absolute; top: -4px; right: -4px; width: 30px; height: 30px; border-radius: 50%; background: var(--sky); color: #fff; font: 800 .9rem/30px var(--head); }
+  .steps p { margin: 0; font-size: .975rem; color: #b9cddb; }
+
+  /* Office */
+  .office { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  .office-list { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.25rem; }
+  .office-list li { display: flex; gap: 1rem; }
+  .office-list li > span { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: var(--sky-tint); color: var(--sky-ink); }
+  .office-list address, .office-list p { font-style: normal; margin: 0; font-weight: 500; }
+  .office-list p { display: grid; }
+  .office-list a { font-weight: 600; }
+  .office-visual { display: grid; gap: 1.25rem; }
+  .office-visual :global(.map) { min-height: 260px; }
+
+  @media (max-width: 1000px) {
+    .svc-cards { grid-template-columns: repeat(2, 1fr); }
+    .why { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(2, 1fr); row-gap: 3rem; }
+    .steps::before { display: none; }
+    .about, .office { grid-template-columns: 1fr; }
+    .collage { max-width: 560px; }
+  }
+  @media (max-width: 760px) {
+    .hero { min-height: 0; }
+    .hero-inner { padding-block: 4rem 7rem; }
+    .highlights { grid-template-columns: 1fr; margin-top: -3.5rem; }
+    .count-grid { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
+    .count-grid div:nth-child(3) { border-left: 0; }
+  }
+  @media (max-width: 600px) {
+    .svc-cards, .why, .steps { grid-template-columns: 1fr; }
+    .badge { left: .5rem; }
+  }
+</style>

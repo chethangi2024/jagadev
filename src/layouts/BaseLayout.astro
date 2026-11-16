@@ -1,0 +1,159 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import { site } from '../lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  breadcrumbs?: { name: string; href: string }[];
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { title, description, image, breadcrumbs = [], schema = [], noindex = false } = Astro.props;
+const pageTitle = title ?? site.seo.defaultTitle;
+const pageDesc = description ?? site.seo.defaultDescription;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image ?? site.seo.shareImage, Astro.site).href;
+
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'AccountingService',
+  '@id': new URL('/#business', Astro.site).href,
+  name: site.firmName,
+  description: site.seo.defaultDescription,
+  url: Astro.site?.href,
+  logo: new URL('/images/logo-aj.jpg', Astro.site).href,
+  image: ogImage,
+  telephone: site.phones.map((p) => p.tel),
+  email: site.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${site.address.line1}, ${site.address.line2}`,
+    addressLocality: `${site.address.locality}, ${site.address.city}`,
+    addressRegion: site.address.state,
+    postalCode: site.address.pincode,
+    addressCountry: 'IN',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
+  hasMap: site.mapsLink,
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    opens: '09:30',
+    closes: '20:30',
+  },
+  areaServed: site.areaServed,
+  sameAs: site.social.map((s: { url: string }) => s.url),
+};
+
+const crumbSchema = breadcrumbs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ name: 'Home', href: '/' }, ...breadcrumbs].map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.name,
+        item: new URL(c.href, Astro.site).href,
+      })),
+    }
+  : null;
+
+const allSchema = [business, crumbSchema, ...schema].filter(Boolean);
+---
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0e2a47" />
+    <link rel="icon" href="/images/logo-aj.jpg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="/images/logo-aj.jpg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.firmName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDesc} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    {allSchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    <script>
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Stagger: give each child of [data-stagger] a delay index
+      document.querySelectorAll<HTMLElement>('[data-stagger]').forEach((parent) => {
+        [...parent.children].forEach((child, i) => {
+          const el = child as HTMLElement;
+          if (!el.hasAttribute('data-reveal')) el.setAttribute('data-reveal', parent.dataset.stagger || 'up');
+          el.style.setProperty('--i', String(i));
+        });
+      });
+
+      // Count-up numbers: <span data-count="15">0</span>
+      const countUp = (el: HTMLElement) => {
+        const end = Number(el.dataset.count || 0);
+        if (reduce) { el.textContent = String(end); return; }
+        const start = performance.now(), dur = 1600;
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - start) / dur);
+          el.textContent = String(Math.round(end * (1 - Math.pow(1 - t, 3))));
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target as HTMLElement;
+          el.classList.add('is-in');
+          setTimeout(() => el.classList.add('done'), 1400);
+          el.querySelectorAll<HTMLElement>('[data-count]').forEach(countUp);
+          if (el.hasAttribute('data-count')) countUp(el);
+          io.unobserve(el);
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('[data-reveal], [data-reveal-img], [data-counters]').forEach((el) => io.observe(el));
+
+      // Gentle parallax on banner photos
+      const layers = [...document.querySelectorAll<HTMLElement>('[data-parallax]')];
+      if (!reduce && layers.length) {
+        let ticking = false;
+        const update = () => {
+          layers.forEach((l) => {
+            const r = l.parentElement!.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > innerHeight) return;
+            l.style.transform = `translate3d(0, ${(-r.top * 0.25).toFixed(1)}px, 0) scale(1.12)`;
+          });
+          ticking = false;
+        };
+        addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+        update();
+      }
+    </script>
+  </body>
+</html>

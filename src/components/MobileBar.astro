@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { site, primaryPhone, waLink } from '../lib/site';
+---
+<nav class="mobile-bar" aria-label="Quick contact">
+  <a href={`tel:${primaryPhone.tel}`}><Icon name="phone" size={20} />Call</a>
+  <a href={waLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={20} />WhatsApp</a>
+  <a href={site.mapsLink} target="_blank" rel="noopener"><Icon name="directions" size={20} />Directions</a>
+</nav>
+<style>
+  .mobile-bar { display: none; }
+  @media (max-width: 760px) {
+    .mobile-bar { display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; inset: auto 0 0; z-index: 60; background: #fff; border-top: 1px solid var(--rule); box-shadow: 0 -8px 24px -16px rgba(14,42,71,.4); padding-bottom: env(safe-area-inset-bottom); }
+    .mobile-bar a { display: flex; flex-direction: column; align-items: center; gap: .2rem; padding: .6rem 0 .55rem; font-size: .8rem; font-weight: 600; color: var(--navy); text-decoration: none; min-height: 56px; }
+    .mobile-bar a:first-child { background: var(--navy); color: #fff; }
+    .mobile-bar a + a { border-left: 1px solid var(--rule); }
+  }
+</style>

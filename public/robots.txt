@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jagadevassociatesllp.com/sitemap-index.xml

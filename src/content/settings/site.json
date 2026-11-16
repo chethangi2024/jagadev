@@ -1,0 +1,65 @@
+{
+  "firmName": "Jagadev Associates LLP",
+  "shortName": "Jagadev Associates",
+  "descriptor": "Tax practitioners, auditors and corporate affairs",
+  "llpin": "AAX-9095",
+  "partnerName": "J Devaraj",
+  "partnerRole": "Designated Partner",
+  "yearsInPractice": "15",
+  "phones": [
+    {
+      "label": "+91 99458 40776",
+      "tel": "+919945840776"
+    },
+    {
+      "label": "+91 99804 47134",
+      "tel": "+919980447134"
+    }
+  ],
+  "whatsapp": "919945840776",
+  "whatsappMessage": "Hello Jagadev Associates, I would like to enquire about",
+  "email": "jagadevassociatesllp@gmail.com",
+  "address": {
+    "line1": "No. 170, Ground Floor, Eesha Nilaya",
+    "line2": "9th Cross, Bhoo Vaibhava Layout, Maha Yogi Vemanna Reddy Road",
+    "locality": "Kyalasanahalli, Kothanur Post",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "pincode": "560077",
+    "landmark": ""
+  },
+  "geo": {
+    "lat": 13.0588681,
+    "lng": 77.6636712
+  },
+  "mapsLink": "https://maps.app.goo.gl/rS7itK7DdwxqX1dV6",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5313.759097739279!2d77.6636712!3d13.058868099999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae110f2ca56c5b%3A0x4158b9297dea06b3!2sJAGADEV%20ASSOCIATES%20LLP!5e1!3m2!1sen!2sin!4v1794826834830!5m2!1sen!2sin",
+  "hours": {
+    "days": "Monday to Saturday",
+    "time": "9:30 AM – 8:30 PM",
+    "short": "Mon–Sat, 9:30 AM – 8:30 PM",
+    "schema": "Mo-Sa 09:30-20:30"
+  },
+  "areaServed": [
+    "Kothanur",
+    "Kyalasanahalli",
+    "Bengaluru"
+  ],
+  "social": [],
+  "grievanceOfficer": {
+    "name": "[Name to be confirmed]",
+    "role": "Grievance Officer",
+    "email": "jagadevassociatesllp@gmail.com",
+    "phone": "+91 99458 40776",
+    "responseTime": "within 30 days"
+  },
+  "form": {
+    "web3formsAccessKey": "",
+    "noticeVersion": "2026-11-v1"
+  },
+  "seo": {
+    "defaultTitle": "Jagadev Associates LLP | Tax, GST & Company Compliance in Kothanur, Bengaluru",
+    "defaultDescription": "GST, income tax, company and LLP registration, ROC filings, accounting and payroll compliance for businesses in Kothanur and north-east Bengaluru. Open Mon–Sat.",
+    "shareImage": "/images/share-card.png"
+  }
+}

@@ -1,0 +1,121 @@
+@import '@fontsource-variable/plus-jakarta-sans/index.css';
+@import '@fontsource-variable/public-sans/index.css';
+
+/* ---------- Design tokens ---------- */
+:root {
+  --navy: #0e2a47;
+  --navy-2: #163a5e;
+  --sky: #219bc1;          /* sampled from the AJ logo */
+  --sky-ink: #16708d;      /* darker sky for readable links */
+  --sky-tint: #e6f3f8;
+  --paper: #f4f8fa;
+  --white: #ffffff;
+  --ink: #1f2933;
+  --muted: #52606d;
+  --rule: #d6e3ea;
+  --gold: #c9a45c;
+
+  --head: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+  --sans: 'Public Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.2rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.8rem, 1.4rem + 1.4vw, 2.6rem);
+  --step-4: clamp(2.3rem, 1.6rem + 3vw, 4rem);
+
+  --wrap: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --radius: 10px;
+  --radius-lg: 18px;
+  --shadow: 0 2px 4px rgba(14, 42, 71, 0.05), 0 18px 40px -18px rgba(14, 42, 71, 0.28);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--sans); font-size: var(--step-0); line-height: 1.65; }
+img { max-width: 100%; display: block; }
+a { color: var(--sky-ink); text-underline-offset: 3px; }
+a:hover { color: var(--navy); }
+:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--head); color: var(--navy); font-weight: 750; line-height: 1.15; margin: 0 0 0.5em; letter-spacing: -0.02em; }
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-1); letter-spacing: -0.01em; line-height: 1.3; }
+p { margin: 0 0 1em; }
+.wrap { width: min(100% - 2 * var(--gutter), var(--wrap)); margin-inline: auto; }
+.measure { max-width: 62ch; }
+.lead { font-size: var(--step-1); color: var(--muted); line-height: 1.6; }
+.muted { color: var(--muted); }
+.skip { position: absolute; left: -999px; top: 0; background: var(--navy); color: #fff; padding: .6rem 1rem; z-index: 100; }
+.skip:focus { left: 1rem; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Small coloured kicker above section titles (sentence case) */
+.kicker { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--head); font-weight: 700; font-size: .95rem; color: var(--sky-ink); margin-bottom: .6rem; }
+.kicker::before { content: ''; width: 28px; height: 3px; border-radius: 3px; background: var(--sky); }
+.on-dark .kicker { color: #7fd0ea; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: .55rem; min-height: 50px; padding: .75rem 1.4rem;
+  border-radius: 999px; border: 1.5px solid transparent; font: 650 1rem/1.2 var(--head);
+  text-decoration: none; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s, transform .2s var(--ease), box-shadow .2s;
+}
+.btn svg { width: 1.15em; height: 1.15em; flex: none; }
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--sky); color: #fff; box-shadow: 0 10px 24px -10px rgba(33,155,193,.8); }
+.btn-primary:hover { background: #1b87a9; color: #fff; }
+.btn-navy { background: var(--navy); color: #fff; }
+.btn-navy:hover { background: var(--navy-2); color: #fff; }
+.btn-outline { border-color: var(--navy); color: var(--navy); background: transparent; }
+.btn-outline:hover { background: var(--navy); color: #fff; }
+.btn-ghost { border-color: rgba(255,255,255,.7); color: #fff; }
+.btn-ghost:hover { background: #fff; color: var(--navy); }
+.btn-light { background: #fff; color: var(--navy); }
+.btn-light:hover { background: var(--sky-tint); color: var(--navy); }
+.btn-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* ---------- Sections ---------- */
+.section { padding-block: clamp(4rem, 9vw, 7rem); }
+.section-tint { background: var(--paper); }
+.section-navy { background: var(--navy); color: #c9dae6; }
+.section-navy h2, .section-navy h3 { color: #fff; }
+.section-head { margin-bottom: clamp(2.25rem, 5vw, 3.5rem); max-width: 62ch; }
+.section-head.center { text-align: center; margin-inline: auto; }
+.section-head.center .kicker { justify-content: center; }
+.section-head p { color: var(--muted); margin: 0; font-size: var(--step-1); }
+.section-navy .section-head p { color: #b9cddb; }
+
+/* ---------- Prose (Markdown) ---------- */
+.prose { max-width: 72ch; }
+.prose h2 { font-size: var(--step-2); margin-top: 2.2em; }
+.prose h3 { margin-top: 1.6em; }
+.prose ul { padding-left: 1.2rem; }
+.prose li { margin-bottom: .35em; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: var(--step--1); }
+.prose th, .prose td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--rule); }
+.prose th { color: var(--navy); }
+.prose blockquote { margin: 0 0 2rem; padding: 1rem 1.25rem; background: #fbf5e8; border-left: 4px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; }
+.prose blockquote p { margin: 0; }
+
+/* ---------- Scroll animations ----------
+   Add data-reveal (up | left | right | zoom | fade) to any element.
+   Add data-stagger to a parent to reveal its children one after another.
+   Only active when JavaScript runs, and switched off for reduced-motion users. */
+.js [data-reveal] { opacity: 0; transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); will-change: opacity, transform; }
+.js [data-reveal='up'], .js [data-reveal=''] { transform: translateY(36px); }
+.js [data-reveal='left'] { transform: translateX(-48px); }
+.js [data-reveal='right'] { transform: translateX(48px); }
+.js [data-reveal='zoom'] { transform: scale(.92); }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+.js [data-reveal].done { transition-delay: 0s; will-change: auto; }
+.js [data-reveal-img] img { transform: scale(1.12); transition: transform 1.4s var(--ease); }
+.js [data-reveal-img].is-in img { transform: scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .js [data-reveal] { opacity: 1 !important; transform: none !important; }
+}

@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+import home from '../content/pages/home.json';
+import { site, primaryPhone, waLink } from '../lib/site';
+interface Props { title?: string; text?: string; topic?: string; }
+const { title = home.cta.title, text = home.cta.text, topic } = Astro.props;
+---
+<section class="band">
+  <img class="band-bg" src={home.cta.image} alt="" loading="lazy" onerror="this.remove()" />
+  <div class="wrap band-inner on-dark">
+    <div data-reveal="left">
+      <h2>{title}</h2>
+      <p>{text} Office hours: {site.hours.days}, {site.hours.time}.</p>
+    </div>
+    <div class="btn-row" data-reveal="right">
+      <a class="btn btn-primary" href={`tel:${primaryPhone.tel}`}><Icon name="phone" />Call {primaryPhone.label}</a>
+      <a class="btn btn-ghost" href={waLink(topic)} target="_blank" rel="noopener"><Icon name="whatsapp" />WhatsApp us</a>
+    </div>
+  </div>
+</section>
+<style>
+  .band { position: relative; overflow: hidden; background: var(--navy); color: #d9e6ef; padding-block: clamp(3.5rem, 8vw, 5.5rem); }
+  .band-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .band::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(100deg, rgba(14,42,71,.95) 0%, rgba(14,42,71,.85) 55%, rgba(22,90,128,.75) 100%); }
+  .band-inner { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.75rem 3rem; }
+  .band h2 { color: #fff; margin-bottom: .4rem; max-width: 22ch; }
+  .band p { margin: 0; max-width: 54ch; }
+</style>

@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import { getCollection } from 'astro:content';
+import { site, addressOneLine, waLink } from '../lib/site';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const crumbs = [{ name: 'Contact', href: '/contact' }];
+const formKey = site.form.web3formsAccessKey;
+---
+<BaseLayout
+  title="Contact Jagadev Associates LLP | Kothanur, Bengaluru 560077"
+  description="Call, WhatsApp, email or visit Jagadev Associates LLP in Bhoo Vaibhava Layout, Kothanur, Bengaluru. Open Monday to Saturday, 9:30 AM to 8:30 PM."
+  breadcrumbs={crumbs}
+>
+  <PageHero title="Contact us" intro="Call or WhatsApp for the quickest reply. You can also send an enquiry below or visit the office." crumbs={crumbs} image="https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&w=2000&q=70" />
+
+  <section class="section">
+    <div class="wrap contact-grid">
+      <div class="channels" data-stagger="left">
+        <div class="ch">
+          <Icon name="phone" />
+          <div><h2>Call</h2>{site.phones.map((p) => <a href={`tel:${p.tel}`}>{p.label}</a>)}</div>
+        </div>
+        <div class="ch">
+          <Icon name="whatsapp" />
+          <div><h2>WhatsApp</h2><a href={waLink()} target="_blank" rel="noopener">Start a chat</a></div>
+        </div>
+        <div class="ch">
+          <Icon name="mail" />
+          <div><h2>Email</h2><a href={`mailto:${site.email}`}>{site.email}</a></div>
+        </div>
+        <div class="ch">
+          <Icon name="pin" />
+          <div><h2>Office</h2><address>{addressOneLine}</address>
+          {site.address.landmark && <p class="muted">Landmark: {site.address.landmark}</p>}</div>
+        </div>
+        <div class="ch">
+          <Icon name="clock" />
+          <div><h2>Hours</h2><p>{site.hours.days}<br />{site.hours.time}</p></div>
+        </div>
+      </div>
+
+      <form class="enquiry" data-reveal="right" data-form data-key={formKey} novalidate>
+        <h2>Send an enquiry</h2>
+        <input type="hidden" name="subject" value="New website enquiry" />
+        <input type="hidden" name="notice_version" value={site.form.noticeVersion} />
+        <input type="hidden" name="consent_recorded_at" value="" />
+        <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
+
+        <div class="field">
+          <label for="f-name">Your name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-phone">Phone number</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required pattern="[0-9+\s\-]{10,15}" />
+          </div>
+          <div class="field">
+            <label for="f-email">Email <span class="opt">(optional)</span></label>
+            <input id="f-email" name="email" type="email" autocomplete="email" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-service">What do you need help with?</label>
+          <select id="f-service" name="service" required>
+            <option value="">Choose a service</option>
+            {services.map((s) => <option value={s.data.title}>{s.data.title}</option>)}
+            <option value="Something else">Something else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-msg">Message</label>
+          <textarea id="f-msg" name="message" rows="4" maxlength="1500"></textarea>
+          <p class="hint"><Icon name="lock" size={14} />Please don't share PAN, Aadhaar, bank details or documents here.</p>
+        </div>
+
+        <div class="notice">
+          <p>We use your name, phone, email and message only to reply to this enquiry. We keep enquiries for up to 12 months, then delete them. You can withdraw consent at any time by emailing us or sending "STOP" on WhatsApp. Read our <a href="/privacy-policy">Privacy Policy</a>.</p>
+          <label class="check">
+            <input type="checkbox" name="consent_contact" value="yes" required />
+            <span>I agree to Jagadev Associates contacting me about this enquiry.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" name="consent_reminders" value="yes" />
+            <span>Optional: send me due-date reminders on WhatsApp or email.</span>
+          </label>
+        </div>
+
+        <p class="status" role="status" aria-live="polite" data-status></p>
+        <button class="btn btn-primary" type="submit"><Icon name="send" />Send enquiry</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="section section-tint">
+    <div class="wrap">
+      <h2>Find the office</h2>
+      <MapEmbed />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]')!;
+  const status = form.querySelector<HTMLElement>('[data-status]')!;
+  const say = (msg: string, kind: 'ok' | 'err' | '' = '') => { status.textContent = msg; status.dataset.kind = kind; };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      const first = form.querySelector<HTMLElement>(':invalid');
+      const consent = form.querySelector<HTMLInputElement>('[name=consent_contact]')!;
+      say(!consent.checked && first === consent
+        ? 'Tick the box agreeing to be contacted, so we can reply to you.'
+        : 'Fill in your name, a valid phone number and the service you need.', 'err');
+      first?.focus();
+      return;
+    }
+    // DPDP consent record: time and notice version travel with the enquiry
+    (form.elements.namedItem('consent_recorded_at') as HTMLInputElement).value = new Date().toISOString();
+    const data = Object.fromEntries(new FormData(form).entries());
+    if (data.botcheck) return;
+
+    const key = form.dataset.key;
+    if (!key) {
+      say('Online enquiries are not connected yet. Please call or WhatsApp us using the details on this page.', 'err');
+      return;
+    }
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    btn.disabled = true; say('Sending your enquiry…');
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ access_key: key, ...data }),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message);
+      form.reset();
+      say('Enquiry sent. We will call you back during office hours.', 'ok');
+    } catch {
+      say('Your enquiry could not be sent. Please call or WhatsApp us instead.', 'err');
+    } finally { btn.disabled = false; }
+  });
+</script>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .channels { display: grid; gap: 0; border-top: 2px solid var(--navy); }
+  .ch { display: grid; grid-template-columns: 28px 1fr; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--rule); color: var(--sky-ink); }
+  .ch h2 { font-family: var(--head); font-size: .95rem; font-weight: 650; margin-bottom: .25rem; color: var(--navy); }
+  .ch a { display: block; font-weight: 600; }
+  .ch p, .ch address { margin: 0; color: var(--ink); font-style: normal; }
+  .enquiry { background: #fff; border: 1px solid var(--rule); border-radius: var(--radius-lg); padding: clamp(1.5rem, 4vw, 2.5rem); box-shadow: var(--shadow); }
+  .enquiry h2 { font-size: var(--step-2); }
+  .field { display: grid; gap: .35rem; margin-bottom: 1.1rem; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  label { font-weight: 600; font-size: .95rem; color: var(--navy); }
+  .opt { font-weight: 400; color: var(--muted); }
+  input:not([type=checkbox]), select, textarea { font: inherit; padding: .75rem .85rem; border: 1.5px solid #c5d3dc; border-radius: 8px; background: #fff; color: var(--ink); min-height: 48px; width: 100%; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--sky); box-shadow: 0 0 0 3px rgba(33,155,193,.2); }
+  .hint { display: flex; gap: .4rem; align-items: center; font-size: .82rem; color: var(--muted); margin: .1rem 0 0; }
+  .notice { background: var(--sky-tint); border-radius: var(--radius); padding: 1rem 1.1rem; margin: .5rem 0 1.25rem; }
+  .notice p { font-size: .85rem; color: var(--ink); margin-bottom: .75rem; }
+  .check { display: grid; grid-template-columns: 22px 1fr; gap: .6rem; align-items: start; font-weight: 500; font-size: .92rem; color: var(--ink); margin-top: .55rem; cursor: pointer; }
+  .check input { width: 20px; height: 20px; margin-top: .1rem; accent-color: var(--navy); }
+  .status { min-height: 1.5em; font-weight: 600; font-size: .95rem; }
+  .status[data-kind='ok'] { color: #1d7a46; }
+  .status[data-kind='err'] { color: #b42318; }
+  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+</style>

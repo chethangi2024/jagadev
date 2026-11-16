@@ -1,0 +1,67 @@
+---
+import Icon from './Icon.astro';
+import { getCollection } from 'astro:content';
+import { site, addressOneLine, nav, waLink } from '../lib/site';
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="f-brand">
+      <img src="/images/logo-aj.jpg" alt={`${site.firmName} logo`} width="56" height="56" />
+      <p class="f-name">{site.firmName}</p>
+      <p class="f-desc">{site.descriptor}. LLPIN {site.llpin}.</p>
+    </div>
+    <div>
+      <h2 class="f-head">Visit</h2>
+      <address>
+        {addressOneLine}
+      </address>
+      <p class="f-line"><Icon name="clock" size={18} />{site.hours.days}, {site.hours.time}</p>
+      <a class="f-line" href={site.mapsLink} target="_blank" rel="noopener"><Icon name="directions" size={18} />Get directions</a>
+    </div>
+    <div>
+      <h2 class="f-head">Contact</h2>
+      {site.phones.map((p) => <a class="f-line" href={`tel:${p.tel}`}><Icon name="phone" size={18} />{p.label}</a>)}
+      <a class="f-line" href={waLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} />WhatsApp us</a>
+      <a class="f-line" href={`mailto:${site.email}`}><Icon name="mail" size={18} />{site.email}</a>
+      {site.social.length > 0 && (
+        <p class="f-social">{site.social.map((s: { name: string; url: string }) => <a href={s.url} target="_blank" rel="noopener">{s.name}</a>)}</p>
+      )}
+    </div>
+    <div>
+      <h2 class="f-head">Services</h2>
+      <ul class="f-list">
+        {services.map((s) => <li><a href={`/services/${s.id}`}>{s.data.title}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap f-bottom">
+    <p>© {year} {site.firmName}. All rights reserved.</p>
+    <p class="f-legal">
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms of Use</a>
+      <span>Grievance Officer: <a href={`mailto:${site.grievanceOfficer.email}`}>{site.grievanceOfficer.email}</a></span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--navy); color: #b9cddb; padding: clamp(3rem, 6vw, 4.5rem) 0 6rem; position: relative; overflow: hidden; font-size: .975rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1.1fr .9fr; gap: 2.5rem; position: relative; }
+  .f-brand img { border-radius: 10px; margin-bottom: 1rem; background: #fff; }
+  .f-name { font-family: var(--head); font-size: 1.5rem; color: #fff; margin: 0 0 .25rem; font-weight: 600; }
+  .f-desc { max-width: 30ch; }
+  .f-head { font-family: var(--sans); font-size: .95rem; font-weight: 650; color: #fff; margin-bottom: 1rem; letter-spacing: .01em; }
+  address { font-style: normal; margin-bottom: .9rem; }
+  .f-line { display: flex; align-items: center; gap: .55rem; color: #d9e6ef; text-decoration: none; margin: 0 0 .55rem; }
+  .f-line :global(svg) { color: var(--sky); flex: none; }
+  a.f-line:hover, .f-list a:hover, .f-legal a:hover { color: #fff; text-decoration: underline; }
+  .f-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .f-list a, .f-legal a, .f-social a { color: #d9e6ef; text-decoration: none; }
+  .f-social { display: flex; gap: 1rem; }
+  .f-bottom { border-top: 1px solid rgba(255,255,255,.12); margin-top: 3rem; padding-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: var(--step--1); position: relative; }
+  .f-bottom p { margin: 0; }
+  .f-legal { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+  @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+</style>
